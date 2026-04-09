@@ -20,7 +20,6 @@ router.use(authenticateJWT);
 
 // ── Employee self-service ──────────────────────────────────────────────────
 
-<<<<<<< HEAD
 /**
  * @swagger
  * /api/v1/attendance/check-in:
@@ -169,23 +168,11 @@ router.get('/today', getTodayHandler);
  *                 pagination:
  *                   $ref: '#/components/schemas/Pagination'
  */
-=======
-// POST /api/v1/attendance/check-in
-router.post('/check-in', validate(checkInSchema), checkInHandler);
-
-// POST /api/v1/attendance/check-out
-router.post('/check-out', validate(checkOutSchema), checkOutHandler);
-
-// GET /api/v1/attendance/today
-router.get('/today', getTodayHandler);
-
->>>>>>> 9c97959f03c8689d19c25bea64a01e0882f31736
 // GET /api/v1/attendance/history
 router.get('/history', getHistoryHandler);
 
 // ── Admin / manager: all records ───────────────────────────────────────────
 
-<<<<<<< HEAD
 /**
  * @swagger
  * /api/v1/attendance:
@@ -259,15 +246,12 @@ router.get('/history', getHistoryHandler);
  *             schema:
  *               $ref: '#/components/schemas/ApiError'
  */
-=======
->>>>>>> 9c97959f03c8689d19c25bea64a01e0882f31736
 // GET /api/v1/attendance/ — list with filters
 // Note: this route must be defined BEFORE /:id to avoid shadowing
 router.get('/', requireRole(['admin', 'manager']), getAllRecordsHandler);
 
 // ── Admin / manager: summary ───────────────────────────────────────────────
 
-<<<<<<< HEAD
 /**
  * @swagger
  * /api/v1/attendance/summary/{employeeId}:
@@ -320,14 +304,11 @@ router.get('/', requireRole(['admin', 'manager']), getAllRecordsHandler);
  *             schema:
  *               $ref: '#/components/schemas/ApiError'
  */
-=======
->>>>>>> 9c97959f03c8689d19c25bea64a01e0882f31736
 // GET /api/v1/attendance/summary/:employeeId
 router.get('/summary/:employeeId', requireRole(['admin', 'manager']), getSummaryHandler);
 
 // ── Admin / manager: single record ────────────────────────────────────────
 
-<<<<<<< HEAD
 /**
  * @swagger
  * /api/v1/attendance/{id}:
@@ -412,8 +393,6 @@ router.get('/summary/:employeeId', requireRole(['admin', 'manager']), getSummary
  *             schema:
  *               $ref: '#/components/schemas/ApiError'
  */
-=======
->>>>>>> 9c97959f03c8689d19c25bea64a01e0882f31736
 // GET /api/v1/attendance/:id
 router.get('/:id', requireRole(['admin', 'manager']), getRecordHandler);
 

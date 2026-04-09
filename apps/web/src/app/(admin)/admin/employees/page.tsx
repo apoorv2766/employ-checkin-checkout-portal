@@ -24,7 +24,7 @@ const employeeSchema = z.object({
   lastName: z.string().min(1, 'Required'),
   email: z.string().email('Invalid email'),
   password: z.string().min(8, 'Min 8 chars').optional().or(z.literal('')),
-  employeeId: z.string().min(1, 'Required'),
+  employeeId: z.string().optional(),
   department: z.string().min(1, 'Required'),
   designation: z.string().min(1, 'Required'),
   role: z.enum(['employee', 'manager', 'admin']),
@@ -367,7 +367,7 @@ function EmployeeDrawer({
                   type="button"
                   tabIndex={-1}
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
-                  onDoubleClick={() => setShowPassword((v) => !v)}
+                  onClick={() => setShowPassword((v) => !v)}
                   className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-400 hover:text-gray-600 select-none"
                 >
                   {showPassword ? (

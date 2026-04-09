@@ -67,8 +67,8 @@ export function Navbar() {
         toast.error('Please select an image file');
         return;
       }
-      if (file.size > 2 * 1024 * 1024) {
-        toast.error('Image must be smaller than 2 MB');
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('Image must be smaller than 5 MB');
         return;
       }
 
@@ -251,9 +251,9 @@ export function Navbar() {
                 <div className="border-t border-gray-100 px-4 py-3">
                   <button
                     onClick={handleLogout}
-                    className="w-full rounded-lg py-2 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
+                    className="btn-primary btn-danger w-full"
                   >
-                    Sign out
+                    <span>Sign out</span>
                   </button>
                 </div>
               </div>
