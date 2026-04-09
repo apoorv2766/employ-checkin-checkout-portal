@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { User, Shift, AuditLog } from '../models';
 import { AppError, ErrorCode } from '../utils/AppError';
-import redis, { loginLockKey } from '../lib/redis';
+import redis, { loginLockKey, refreshKeyPattern } from '../lib/redis';
 import type {
   CreateEmployeeInput,
   UpdateEmployeeInput,
@@ -231,6 +231,34 @@ export async function deactivateEmployee(
   });
 }
 
+export async function reactivateEmployee(
+  id: string,
+  performedBy: Types.ObjectId,
+  ipAddress: string,
+) {
+  const employee = await User.findById(id).select('-passwordHash');
+  if (!employee) {
+    throw new AppError(ErrorCode.NOT_FOUND, 404, 'Employee not found');
+  }
+  if (employee.isActive) {
+    throw new AppError(ErrorCode.CONFLICT, 409, 'Employee is already active');
+  }
+
+  employee.isActive = true;
+  await employee.save();
+
+  await AuditLog.create({
+    action: 'employee.reactivate',
+    performedBy,
+    targetResource: 'User',
+    targetId: employee._id,
+    before: { isActive: false },
+    after: { isActive: true },
+    ipAddress,
+    timestamp: new Date(),
+  });
+}
+
 // ─── Employee updates own profile ─────────────────────────────────────────────
 
 export async function updateOwnProfile(
@@ -249,6 +277,42 @@ export async function updateOwnProfile(
 
   await employee.save();
   return employee;
+}
+
+// ─── Admin: change password for any employee ────────────────────────────────
+
+export async function adminChangePassword(
+  id: string,
+  newPassword: string,
+  performedBy: Types.ObjectId,
+  ipAddress: string,
+) {
+  // Must select '+passwordHash' — the field has select:false and Mongoose
+  // cannot save it if it was never loaded from the DB.
+  const employee = await User.findById(id).select('+passwordHash');
+  if (!employee) {
+    throw new AppError(ErrorCode.NOT_FOUND, 404, 'Employee not found');
+  }
+
+  employee.passwordHash = await bcrypt.hash(newPassword, 12);
+  await employee.save();
+
+  // Invalidate all existing refresh tokens so the employee must re-login
+  const allKeys = await redis.keys(refreshKeyPattern(id));
+  if (allKeys.length > 0) {
+    await redis.del(...allKeys);
+  }
+
+  await AuditLog.create({
+    action: 'employee.admin_change_password',
+    performedBy,
+    targetResource: 'User',
+    targetId: employee._id,
+    before: {},
+    after: { passwordChanged: true },
+    ipAddress,
+    timestamp: new Date(),
+  });
 }
 
 // ─── Query param shape for list endpoint ──────────────────────────────────────

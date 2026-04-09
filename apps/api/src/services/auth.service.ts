@@ -98,6 +98,7 @@ export async function login(
     department: user.department,
     designation: user.designation,
     timezone: user.timezone,
+    profilePhoto: user.profilePhoto,
   };
 
   return { tokens, user: safeUser };

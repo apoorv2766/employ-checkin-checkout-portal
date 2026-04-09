@@ -17,6 +17,7 @@ Employees can check in / check out from a self-service portal; managers and admi
 - [Seeding the Database](#seeding-the-database)
 - [Available Scripts](#available-scripts)
 - [API Reference](#api-reference)
+- [Swagger API Docs](#swagger-api-docs)
 - [Roles & Permissions](#roles--permissions)
 - [Default Credentials](#default-credentials)
 - [Postman Collection](#postman-collection)
@@ -287,6 +288,16 @@ npm run dev --workspace=apps/web    # Web only  → http://localhost:3000
 
 ---
 
+
+## Swagger API Docs
+
+Interactive API documentation is available via Swagger UI when running locally:
+
+- [Swagger UI — http://localhost:4000/api-docs](http://localhost:4000/api-docs)
+
+You can explore all endpoints, schemas, and try requests directly from the browser.
+
+---
 ## API Reference
 
 Base URL: `http://localhost:4000/api/v1`

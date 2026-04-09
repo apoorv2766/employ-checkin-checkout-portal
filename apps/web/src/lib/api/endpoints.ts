@@ -76,7 +76,12 @@ export const employeesApi = {
 
   deactivate: (id: string) => api.delete(`/employees/${id}`),
 
+  reactivate: (id: string) => api.post(`/employees/${id}/reactivate`),
+
   unlock: (id: string) => api.post(`/employees/${id}/unlock`),
+
+  adminChangePassword: (id: string, newPassword: string) =>
+    api.post(`/employees/${id}/change-password`, { newPassword }),
 };
 
 export const reportsApi = {

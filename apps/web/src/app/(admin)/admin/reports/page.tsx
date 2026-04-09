@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { format } from 'date-fns';
 import { useQuery } from '@tanstack/react-query';
 import { reportsApi } from '@/lib/api/endpoints';
+import { formatHours } from '@/lib/utils/formatters';
 
 const DEPARTMENTS = [
   'Engineering', 'Product', 'Design', 'Marketing', 'Operations',
@@ -68,7 +69,7 @@ export default function AdminReportsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <h1 className="text-2xl font-bold text-gray-900">Reports</h1>
         <button
           onClick={handleExportCsv}
@@ -80,20 +81,21 @@ export default function AdminReportsPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex flex-wrap gap-3">
-        <div className="flex items-center gap-2">
-          <label className="text-sm text-gray-600">Month</label>
+      <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:items-end">
+        <div className="flex flex-col gap-1">
+          <label htmlFor="filter-month" className="text-xs font-medium text-gray-500">Month</label>
           <input
+            id="filter-month"
             type="month"
             value={month}
             onChange={(e) => setMonth(e.target.value)}
-            className="input"
+            className="input w-full"
           />
         </div>
         <select
           value={department}
           onChange={(e) => setDepartment(e.target.value)}
-          className="input w-44"
+          className="input w-full sm:w-44"
         >
           <option value="">All Departments</option>
           {DEPARTMENTS.map((d) => (
@@ -104,7 +106,54 @@ export default function AdminReportsPage() {
 
       {/* Table */}
       <div className="card overflow-hidden">
-        <div className="overflow-x-auto">
+        {/* ── Mobile cards (hidden on sm+) ── */}
+        <div className="sm:hidden divide-y divide-gray-100">
+          {isLoading ? (
+            Array.from({ length: 4 }).map((_, i) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <div key={i} className="animate-pulse space-y-2 p-4">
+                <div className="h-4 w-1/2 rounded bg-gray-200" />
+                <div className="h-3 w-3/4 rounded bg-gray-200" />
+              </div>
+            ))
+          ) : rows.length === 0 ? (
+            <p className="px-4 py-8 text-center text-gray-400">No data for the selected period.</p>
+          ) : (
+            rows.map((row, idx) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <div key={idx} className="p-4 space-y-2 text-sm">
+                <div>
+                  <p className="font-semibold text-gray-900">{row.firstName} {row.lastName}</p>
+                  <p className="text-xs text-gray-400">{row.employeeId} · {row.department}</p>
+                </div>
+                <dl className="grid grid-cols-3 gap-x-3 gap-y-1.5 text-xs">
+                  <div><dt className="text-gray-400">Present</dt><dd className="font-medium text-green-700">{row.present}</dd></div>
+                  <div><dt className="text-gray-400">Late</dt><dd className="font-medium text-amber-700">{row.late}</dd></div>
+                  <div><dt className="text-gray-400">Absent</dt><dd className="font-medium text-red-700">{row.absent}</dd></div>
+                  <div><dt className="text-gray-400">On Leave</dt><dd className="font-medium text-blue-700">{row.onLeave}</dd></div>
+                  <div><dt className="text-gray-400">Half Day</dt><dd className="font-medium text-orange-700">{row.halfDay}</dd></div>
+                  <div><dt className="text-gray-400">Total Hrs</dt><dd className="font-medium text-gray-700">{formatHours(row.totalHours)}</dd></div>
+                </dl>
+              </div>
+            ))
+          )}
+          {rows.length > 0 && (
+            <div className="bg-gray-50 p-4 text-xs font-semibold text-gray-700">
+              <p className="mb-2">Totals</p>
+              <dl className="grid grid-cols-3 gap-x-3 gap-y-1.5">
+                <div><dt className="text-gray-400 font-normal">Present</dt><dd className="text-green-700">{rows.reduce((s, r) => s + r.present, 0)}</dd></div>
+                <div><dt className="text-gray-400 font-normal">Late</dt><dd className="text-amber-700">{rows.reduce((s, r) => s + r.late, 0)}</dd></div>
+                <div><dt className="text-gray-400 font-normal">Absent</dt><dd className="text-red-700">{rows.reduce((s, r) => s + r.absent, 0)}</dd></div>
+                <div><dt className="text-gray-400 font-normal">On Leave</dt><dd className="text-blue-700">{rows.reduce((s, r) => s + r.onLeave, 0)}</dd></div>
+                <div><dt className="text-gray-400 font-normal">Half Day</dt><dd className="text-orange-700">{rows.reduce((s, r) => s + r.halfDay, 0)}</dd></div>
+                <div><dt className="text-gray-400 font-normal">Total Hrs</dt><dd className="text-gray-700">{formatHours(rows.reduce((s, r) => s + r.totalHours, 0))}</dd></div>
+              </dl>
+            </div>
+          )}
+        </div>
+
+        {/* ── Desktop table (hidden below sm) ── */}
+        <div className="hidden sm:block overflow-x-auto">
           <table className="min-w-full text-sm">
             <thead className="bg-gray-50 text-xs text-gray-500 uppercase tracking-wide">
               <tr>
@@ -121,8 +170,10 @@ export default function AdminReportsPage() {
             <tbody className="divide-y divide-gray-100">
               {isLoading ? (
                 Array.from({ length: 6 }).map((_, i) => (
+                  // eslint-disable-next-line react/no-array-index-key
                   <tr key={i} className="animate-pulse">
                     {Array.from({ length: 8 }).map((__, j) => (
+                      // eslint-disable-next-line react/no-array-index-key
                       <td key={j} className="px-4 py-3">
                         <div className="h-4 rounded bg-gray-200" />
                       </td>
@@ -137,6 +188,7 @@ export default function AdminReportsPage() {
                 </tr>
               ) : (
                 rows.map((row, idx) => (
+                  // eslint-disable-next-line react/no-array-index-key
                   <tr key={idx} className="hover:bg-gray-50">
                     <td className="px-4 py-3 font-medium text-gray-900">
                       {row.firstName} {row.lastName}
@@ -151,7 +203,7 @@ export default function AdminReportsPage() {
                     <td className="px-4 py-3 text-right text-blue-700">{row.onLeave}</td>
                     <td className="px-4 py-3 text-right text-orange-700">{row.halfDay}</td>
                     <td className="px-4 py-3 text-right text-gray-700 font-medium">
-                      {row.totalHours.toFixed(1)}h
+                      {formatHours(row.totalHours)}
                     </td>
                   </tr>
                 ))
@@ -177,7 +229,7 @@ export default function AdminReportsPage() {
                     {rows.reduce((s, r) => s + r.halfDay, 0)}
                   </td>
                   <td className="px-4 py-3 text-right">
-                    {rows.reduce((s, r) => s + r.totalHours, 0).toFixed(1)}h
+                    {formatHours(rows.reduce((s, r) => s + r.totalHours, 0))}
                   </td>
                 </tr>
               </tfoot>

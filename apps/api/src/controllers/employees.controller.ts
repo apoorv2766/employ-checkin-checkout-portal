@@ -7,6 +7,7 @@ import type {
   CreateEmployeeInput,
   UpdateEmployeeInput,
   UpdateOwnProfileInput,
+  AdminChangePasswordInput,
 } from '@attendance-portal/shared';
 
 // ─── GET /employees ───────────────────────────────────────────────────────────
@@ -165,6 +166,53 @@ export async function deactivateEmployeeHandler(
       req.ip ?? 'unknown',
     );
     sendSuccess(res, null, 200, 'Employee deactivated');
+  } catch (err) {
+    next(err);
+  }
+}
+
+// ─── POST /employees/:id/reactivate ─────────────────────────────────────────
+
+export async function reactivateEmployeeHandler(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> {
+  try {
+    if (!req.user) {
+      sendError(res, ErrorCode.UNAUTHORIZED, 'Unauthenticated', 401);
+      return;
+    }
+    await employeesService.reactivateEmployee(
+      req.params['id'] as string,
+      req.user._id,
+      req.ip ?? 'unknown',
+    );
+    sendSuccess(res, null, 200, 'Employee reactivated');
+  } catch (err) {
+    next(err);
+  }
+}
+
+// ─── POST /employees/:id/change-password ────────────────────────────────────
+
+export async function adminChangePasswordHandler(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> {
+  try {
+    if (!req.user) {
+      sendError(res, ErrorCode.UNAUTHORIZED, 'Unauthenticated', 401);
+      return;
+    }
+    await employeesService.adminChangePassword(
+      req.params['id'] as string,
+      (req.body as AdminChangePasswordInput).newPassword,
+      req.user._id,
+      req.ip ?? 'unknown',
+    );
+    sendSuccess(res, null, 200, 'Password changed successfully');
   } catch (err) {
     next(err);
   }

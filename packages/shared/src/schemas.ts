@@ -22,6 +22,10 @@ export const changePasswordSchema = z.object({
   newPassword: z.string().min(8),
 });
 
+export const adminChangePasswordSchema = z.object({
+  newPassword: z.string().min(8),
+});
+
 export const forgotPasswordSchema = z.object({
   email: z.string().email(),
 });
@@ -123,3 +127,4 @@ export type UpdateEmployeeInput = z.infer<typeof updateEmployeeSchema>;
 export type UpdateOwnProfileInput = z.infer<typeof updateOwnProfileSchema>;
 export type CreateLeaveRequestInput = z.infer<typeof createLeaveRequestSchema>;
 export type MonthlyReportInput = z.infer<typeof monthlyReportSchema>;
+export type AdminChangePasswordInput = z.infer<typeof adminChangePasswordSchema>;

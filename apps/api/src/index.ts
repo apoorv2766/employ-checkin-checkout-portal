@@ -4,7 +4,9 @@ import helmet from 'helmet';
 import cors from 'cors';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
+import swaggerUi from 'swagger-ui-express';
 import { connectMongoose } from './lib/mongoose';
+import { swaggerSpec } from './lib/swagger';
 import { apiRateLimiter } from './middleware/rateLimit.middleware';
 import { appErrorHandler } from './controllers/auth.controller';
 import authRouter from './routes/auth.routes';
@@ -21,7 +23,12 @@ const PORT = process.env['PORT'] ?? 4000;
 app.set('trust proxy', 1);
 
 // ─── Security & parsing middleware ────────────────────────────────────────────
-app.use(helmet());
+app.use(
+  helmet({
+    // Allow Swagger UI inline styles/scripts
+    contentSecurityPolicy: process.env['NODE_ENV'] === 'production' ? undefined : false,
+  }),
+);
 app.use(
   cors({
     origin: (process.env['ALLOWED_ORIGINS'] ?? 'http://localhost:3000').split(','),
@@ -29,12 +36,21 @@ app.use(
   }),
 );
 app.use(morgan('dev'));
-app.use(express.json({ limit: '5mb' }));
-app.use(express.urlencoded({ extended: false, limit: '5mb' }));
+app.use(express.json({ limit: '8mb' }));
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // ─── Global rate limiter: 100 req/min per IP ──────────────────────────────────
 app.use(apiRateLimiter);
+
+// ─── Swagger UI (disabled in production) ──────────────────────────────────────
+if (process.env['NODE_ENV'] !== 'production') {
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.get('/api-docs.json', (_req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerSpec);
+  });
+}
 
 // ─── Health check ─────────────────────────────────────────────────────────────
 app.get('/health', (_req, res) => {

@@ -40,64 +40,64 @@ function HeroPanel() {
         {/* Main SVG illustration */}
         <svg viewBox="0 0 340 280" className="w-72 drop-shadow-2xl" fill="none" xmlns="http://www.w3.org/2000/svg">
           {/* Dashboard card background */}
-          <rect x="20" y="20" width="300" height="200" rx="20" fill="white" fillOpacity="0.12" stroke="white" strokeOpacity="0.25" strokeWidth="1.5"/>
+          <rect x="20" y="20" width="300" height="200" rx="20" fill="white" fillOpacity="0.12" stroke="white" strokeOpacity="0.25" strokeWidth="1.5" />
 
           {/* Header bar */}
-          <rect x="20" y="20" width="300" height="48" rx="20" fill="white" fillOpacity="0.18"/>
-          <rect x="20" y="52" width="300" height="16" fill="white" fillOpacity="0.18"/>
+          <rect x="20" y="20" width="300" height="48" rx="20" fill="white" fillOpacity="0.18" />
+          <rect x="20" y="52" width="300" height="16" fill="white" fillOpacity="0.18" />
 
           {/* Avatar circles in header */}
-          <circle cx="56" cy="44" r="14" fill="#c850c0" fillOpacity="0.8"/>
-          <circle cx="56" cy="40" r="6" fill="white" fillOpacity="0.9"/>
-          <ellipse cx="56" cy="52" rx="9" ry="5" fill="white" fillOpacity="0.7"/>
+          <circle cx="56" cy="44" r="14" fill="#c850c0" fillOpacity="0.8" />
+          <circle cx="56" cy="40" r="6" fill="white" fillOpacity="0.9" />
+          <ellipse cx="56" cy="52" rx="9" ry="5" fill="white" fillOpacity="0.7" />
 
           {/* Header text lines */}
-          <rect x="80" y="36" width="80" height="8" rx="4" fill="white" fillOpacity="0.7"/>
-          <rect x="80" y="48" width="50" height="5" rx="2.5" fill="white" fillOpacity="0.4"/>
+          <rect x="80" y="36" width="80" height="8" rx="4" fill="white" fillOpacity="0.7" />
+          <rect x="80" y="48" width="50" height="5" rx="2.5" fill="white" fillOpacity="0.4" />
 
           {/* Status badge */}
-          <rect x="260" y="36" width="45" height="18" rx="9" fill="#10b981" fillOpacity="0.85"/>
+          <rect x="260" y="36" width="45" height="18" rx="9" fill="#10b981" fillOpacity="0.85" />
           <text x="282.5" y="48.5" textAnchor="middle" fill="white" fontSize="8" fontWeight="700">Active</text>
 
           {/* Check-in time card */}
-          <rect x="36" y="84" width="84" height="68" rx="12" fill="white" fillOpacity="0.15" stroke="white" strokeOpacity="0.2" strokeWidth="1"/>
-          <rect x="44" y="95" width="28" height="28" rx="8" fill="#8e2de2" fillOpacity="0.7"/>
+          <rect x="36" y="84" width="84" height="68" rx="12" fill="white" fillOpacity="0.15" stroke="white" strokeOpacity="0.2" strokeWidth="1" />
+          <rect x="44" y="95" width="28" height="28" rx="8" fill="#8e2de2" fillOpacity="0.7" />
           {/* Clock icon inside */}
-          <circle cx="58" cy="109" r="9" stroke="white" strokeWidth="1.5" fill="none"/>
-          <line x1="58" y1="104" x2="58" y2="109" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-          <line x1="58" y1="109" x2="62" y2="111" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
-          <rect x="44" y="130" width="52" height="7" rx="3.5" fill="white" fillOpacity="0.6"/>
-          <rect x="44" y="141" width="36" height="5" rx="2.5" fill="white" fillOpacity="0.35"/>
+          <circle cx="58" cy="109" r="9" stroke="white" strokeWidth="1.5" fill="none" />
+          <line x1="58" y1="104" x2="58" y2="109" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+          <line x1="58" y1="109" x2="62" y2="111" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+          <rect x="44" y="130" width="52" height="7" rx="3.5" fill="white" fillOpacity="0.6" />
+          <rect x="44" y="141" width="36" height="5" rx="2.5" fill="white" fillOpacity="0.35" />
 
           {/* Attendance bar chart */}
-          <rect x="136" y="84" width="168" height="68" rx="12" fill="white" fillOpacity="0.15" stroke="white" strokeOpacity="0.2" strokeWidth="1"/>
-          <rect x="149" y="96" width="70" height="6" rx="3" fill="white" fillOpacity="0.5"/>
+          <rect x="136" y="84" width="168" height="68" rx="12" fill="white" fillOpacity="0.15" stroke="white" strokeOpacity="0.2" strokeWidth="1" />
+          <rect x="149" y="96" width="70" height="6" rx="3" fill="white" fillOpacity="0.5" />
           {/* Bars */}
-          <rect x="149" y="115" width="16" height="28" rx="4" fill="#10b981" fillOpacity="0.8"/>
-          <rect x="171" y="120" width="16" height="23" rx="4" fill="#10b981" fillOpacity="0.6"/>
-          <rect x="193" y="108" width="16" height="35" rx="4" fill="#8e2de2" fillOpacity="0.8"/>
-          <rect x="215" y="118" width="16" height="25" rx="4" fill="#10b981" fillOpacity="0.6"/>
-          <rect x="237" y="112" width="16" height="31" rx="4" fill="#c850c0" fillOpacity="0.8"/>
-          <rect x="260" y="125" width="16" height="18" rx="4" fill="#f59e0b" fillOpacity="0.8"/>
+          <rect x="149" y="115" width="16" height="28" rx="4" fill="#10b981" fillOpacity="0.8" />
+          <rect x="171" y="120" width="16" height="23" rx="4" fill="#10b981" fillOpacity="0.6" />
+          <rect x="193" y="108" width="16" height="35" rx="4" fill="#8e2de2" fillOpacity="0.8" />
+          <rect x="215" y="118" width="16" height="25" rx="4" fill="#10b981" fillOpacity="0.6" />
+          <rect x="237" y="112" width="16" height="31" rx="4" fill="#c850c0" fillOpacity="0.8" />
+          <rect x="260" y="125" width="16" height="18" rx="4" fill="#f59e0b" fillOpacity="0.8" />
 
           {/* Bottom stat cards */}
-          <rect x="36" y="164" width="84" height="42" rx="10" fill="white" fillOpacity="0.12" stroke="white" strokeOpacity="0.2" strokeWidth="1"/>
-          <rect x="136" y="164" width="78" height="42" rx="10" fill="white" fillOpacity="0.12" stroke="white" strokeOpacity="0.2" strokeWidth="1"/>
-          <rect x="226" y="164" width="78" height="42" rx="10" fill="white" fillOpacity="0.12" stroke="white" strokeOpacity="0.2" strokeWidth="1"/>
+          <rect x="36" y="164" width="84" height="42" rx="10" fill="white" fillOpacity="0.12" stroke="white" strokeOpacity="0.2" strokeWidth="1" />
+          <rect x="136" y="164" width="78" height="42" rx="10" fill="white" fillOpacity="0.12" stroke="white" strokeOpacity="0.2" strokeWidth="1" />
+          <rect x="226" y="164" width="78" height="42" rx="10" fill="white" fillOpacity="0.12" stroke="white" strokeOpacity="0.2" strokeWidth="1" />
 
-          <rect x="46" y="173" width="32" height="7" rx="3" fill="white" fillOpacity="0.4"/>
-          <rect x="46" y="184" width="52" height="8" rx="4" fill="white" fillOpacity="0.75"/>
-          <rect x="146" y="173" width="32" height="7" rx="3" fill="white" fillOpacity="0.4"/>
-          <rect x="146" y="184" width="40" height="8" rx="4" fill="#10b981" fillOpacity="0.85"/>
-          <rect x="236" y="173" width="32" height="7" rx="3" fill="white" fillOpacity="0.4"/>
-          <rect x="236" y="184" width="40" height="8" rx="4" fill="#f59e0b" fillOpacity="0.85"/>
+          <rect x="46" y="173" width="32" height="7" rx="3" fill="white" fillOpacity="0.4" />
+          <rect x="46" y="184" width="52" height="8" rx="4" fill="white" fillOpacity="0.75" />
+          <rect x="146" y="173" width="32" height="7" rx="3" fill="white" fillOpacity="0.4" />
+          <rect x="146" y="184" width="40" height="8" rx="4" fill="#10b981" fillOpacity="0.85" />
+          <rect x="236" y="173" width="32" height="7" rx="3" fill="white" fillOpacity="0.4" />
+          <rect x="236" y="184" width="40" height="8" rx="4" fill="#f59e0b" fillOpacity="0.85" />
 
           {/* Floating check-in pill */}
-          <rect x="60" y="230" width="140" height="36" rx="18" fill="white" fillOpacity="0.2" stroke="white" strokeOpacity="0.4" strokeWidth="1.5"/>
-          <circle cx="83" cy="248" r="10" fill="#10b981" fillOpacity="0.9"/>
-          <path d="M78 248l3.5 3.5 5.5-6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          <rect x="102" y="241" width="60" height="6" rx="3" fill="white" fillOpacity="0.7"/>
-          <rect x="102" y="251" width="40" height="5" rx="2.5" fill="white" fillOpacity="0.4"/>
+          <rect x="60" y="230" width="140" height="36" rx="18" fill="white" fillOpacity="0.2" stroke="white" strokeOpacity="0.4" strokeWidth="1.5" />
+          <circle cx="83" cy="248" r="10" fill="#10b981" fillOpacity="0.9" />
+          <path d="M78 248l3.5 3.5 5.5-6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          <rect x="102" y="241" width="60" height="6" rx="3" fill="white" fillOpacity="0.7" />
+          <rect x="102" y="251" width="40" height="5" rx="2.5" fill="white" fillOpacity="0.4" />
         </svg>
 
         {/* Tagline */}
@@ -187,7 +187,7 @@ function LoginForm() {
       const status = (err as { response?: { status?: number } })?.response?.status;
       let message = apiMsg ?? 'Login failed. Please try again.';
       if (status === 401 || apiMsg?.toLowerCase().includes('invalid')) {
-        message = 'Credentials not matched. Please try again.';
+        message = 'Credentials not matched';
       } else if (status === 429) {
         message = apiMsg ?? 'Too many attempts. Please try later.';
       }
@@ -198,7 +198,6 @@ function LoginForm() {
 
   return (
     <div className="min-h-screen lg:grid lg:grid-cols-2">
-      {/* â”€â”€ Left: form column â”€â”€ */}
       <div className="flex flex-col justify-center px-8 py-12 sm:px-12 lg:px-16 bg-white">
         {/* Mobile brand (hidden on desktop â€” shown in right panel) */}
 
@@ -208,16 +207,6 @@ function LoginForm() {
             <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Hello there! 👋</h1>
             <p className="mt-2 text-gray-500 text-sm">Sign in to the Portal</p>
           </div>
-
-          {/* Error banner */}
-          {serverError && (
-            <div className="mb-5 flex items-start gap-3 rounded-xl bg-red-50 border border-red-200 px-4 py-3">
-              <svg className="h-4 w-4 text-red-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <p className="text-sm text-red-700">{serverError}</p>
-            </div>
-          )}
 
           <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
             {/* Email */}
@@ -242,7 +231,7 @@ function LoginForm() {
               </div>
               {errors.email && (
                 <p className="mt-1.5 text-xs text-red-600 flex items-center gap-1">
-                  <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"/></svg>
+                  <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" /></svg>
                   {errors.email.message}
                 </p>
               )}
@@ -293,7 +282,7 @@ function LoginForm() {
               </div>
               {errors.password && (
                 <p className="mt-1.5 text-xs text-red-600 flex items-center gap-1">
-                  <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd"/></svg>
+                  <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" /></svg>
                   {errors.password.message}
                 </p>
               )}
@@ -301,12 +290,12 @@ function LoginForm() {
 
             {/* Remember me */}
             <label className="flex items-center justify-end gap-2.5 cursor-pointer select-none">
-              <span className="text-sm text-gray-500">Remember Me</span>
               <input
                 type="checkbox"
                 className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                 {...register('rememberMe')}
               />
+              <span className="text-sm text-gray-500">Remember Me</span>
             </label>
 
             {/* Submit */}
@@ -327,7 +316,7 @@ function LoginForm() {
 
           {/* Footer */}
           <p className="mt-8 text-center text-xs text-gray-400">
-            Need help with policy support? 
+            Need help with policy support?
             <span className="text-primary-600 hover:text-primary-700 hover:underline inline-block ml-1">
               Contact Support!
             </span>

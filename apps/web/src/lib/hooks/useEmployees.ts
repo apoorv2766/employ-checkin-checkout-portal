@@ -1,6 +1,6 @@
 'use client';
 
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, keepPreviousData } from '@tanstack/react-query';
 import { employeesApi } from '../api/endpoints';
 import { toast } from '../store/toast.store';
 
@@ -15,6 +15,7 @@ export function useEmployees(params: Record<string, string | number | undefined>
       const res = await employeesApi.list(params);
       return res.data as { data: unknown[]; pagination: unknown };
     },
+    placeholderData: keepPreviousData,
   });
 }
 
@@ -77,6 +78,18 @@ export function useDeactivateEmployee() {
   });
 }
 
+export function useReactivateEmployee() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => employeesApi.reactivate(id),
+    onSuccess: () => {
+      void qc.invalidateQueries({ queryKey: ['employees'] });
+      toast.success('Employee reactivated');
+    },
+    onError: (err) => toast.error(apiMsg(err, 'Failed to reactivate employee')),
+  });
+}
+
 export function useUnlockAccount() {
   const qc = useQueryClient();
   return useMutation({
@@ -86,5 +99,14 @@ export function useUnlockAccount() {
       toast.success('Account unlocked successfully');
     },
     onError: (err) => toast.error(apiMsg(err, 'Failed to unlock account')),
+  });
+}
+
+export function useAdminChangePassword() {
+  return useMutation({
+    mutationFn: ({ id, newPassword }: { id: string; newPassword: string }) =>
+      employeesApi.adminChangePassword(id, newPassword),
+    onSuccess: () => toast.success('Password changed successfully'),
+    onError: (err) => toast.error(apiMsg(err, 'Failed to change password')),
   });
 }

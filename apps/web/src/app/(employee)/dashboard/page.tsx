@@ -1,10 +1,27 @@
 'use client';
 
+import { useState } from 'react';
 import { statusBadgeClass, statusLabel, formatTime, formatHours } from '@/lib/utils/formatters';
 import { useAuthStore } from '@/lib/store/auth.store';
 import { useTodayAttendance, useCheckIn, useCheckOut, useAttendanceHistory } from '@/lib/hooks/useAttendance';
 import { format, subDays, parseISO } from 'date-fns';
 import { Loader } from '@/components/ui/Loader';
+import { toast } from '@/lib/store/toast.store';
+
+// ─── Grab GPS coordinates from the browser ────────────────────────────────────
+function getLocation(): Promise<{ lat: number; lng: number } | null> {
+  return new Promise((resolve) => {
+    if (!navigator.geolocation) {
+      resolve(null);
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => resolve({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+      () => resolve(null),          // denied or unavailable → resolve null, don't block check-in
+      { timeout: 8000, maximumAge: 0 },
+    );
+  });
+}
 
 // ─── Check-in / Check-out card ────────────────────────────────────────────────
 
@@ -13,14 +30,22 @@ function CheckInCard() {
   const { data: today, isLoading } = useTodayAttendance();
   const checkIn = useCheckIn();
   const checkOut = useCheckOut();
+  const [locating, setLocating] = useState(false);
 
   const timezone = user?.timezone ?? 'UTC';
   const hasCheckedIn = !!today;
   const hasCheckedOut = !!(today as Record<string, unknown> | null)?.['checkOut'];
 
-  const handleCheckIn = () => {
-    checkIn.mutate({ method: 'web' });
+  const handleCheckIn = async () => {
+    setLocating(true);
+    const location = await getLocation();
+    setLocating(false);
+    if (!location) {
+      toast.warning('Location unavailable — checking in without GPS coordinates.');
+    }
+    checkIn.mutate({ method: 'web', ...(location ? { location } : {}) });
   };
+
   const handleCheckOut = () => {
     checkOut.mutate({ method: 'web' });
   };
@@ -66,10 +91,11 @@ function CheckInCard() {
       {!hasCheckedIn && (
         <button
           className="btn-primary w-full py-3 text-base"
-          onClick={handleCheckIn}
-          disabled={checkIn.isPending}
+          onClick={() => { void handleCheckIn(); }}
+          disabled={checkIn.isPending || locating}
         >
-          <span>{checkIn.isPending ? 'Checking in…' : '✓ Check In'}</span>
+          {/* eslint-disable-next-line no-nested-ternary */}
+          {locating ? 'Getting location…' : checkIn.isPending ? 'Checking in…' : '✓ Check In'}
         </button>
       )}
       {hasCheckedIn && !hasCheckedOut && (
