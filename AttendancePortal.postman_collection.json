@@ -1,0 +1,427 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "Attendance Portal API",
+    "description": "Complete collection for the Attendance Portal backend API.\n\n**Setup:**\n1. Import this file into Postman\n2. Run **Login** – the `accessToken` collection variable is set automatically\n3. All subsequent requests use that token automatically\n\n**Variables:**\n- `baseUrl` – default `http://localhost:4000/api/v1`\n- `accessToken` – set on login\n- `employeeId` – paste a real employee `_id` after creating one\n- `attendanceId` – paste a real attendance record `_id`",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl",      "value": "http://localhost:4000/api/v1", "type": "string" },
+    { "key": "accessToken",  "value": "", "type": "string" },
+    { "key": "employeeId",   "value": "", "type": "string" },
+    { "key": "attendanceId", "value": "", "type": "string" }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [{ "key": "token", "value": "{{accessToken}}", "type": "string" }]
+  },
+  "item": [
+
+    {
+      "name": "Health Check",
+      "request": {
+        "auth": { "type": "noauth" },
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "http://localhost:4000/health", "protocol": "http", "host": ["localhost"], "port": "4000", "path": ["health"] }
+      }
+    },
+
+    {
+      "name": "🔐 Auth",
+      "item": [
+
+        {
+          "name": "Login",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "if (pm.response.code === 200) {",
+                "  const body = pm.response.json();",
+                "  pm.collectionVariables.set('accessToken', body.data.accessToken);",
+                "  console.log('✅ Token saved:', body.data.accessToken.slice(0, 20) + '...');",
+                "}"
+              ],
+              "type": "text/javascript"
+            }
+          }],
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"Admin1234!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          }
+        },
+
+        {
+          "name": "Refresh Token",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [],
+            "body": { "mode": "raw", "raw": "" },
+            "url": { "raw": "{{baseUrl}}/auth/refresh", "host": ["{{baseUrl}}"], "path": ["auth", "refresh"] },
+            "description": "Reads the `refreshToken` httpOnly cookie automatically (set by browser/Postman Cookie Jar after login). No body needed."
+          }
+        },
+
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": { "mode": "raw", "raw": "" },
+            "url": { "raw": "{{baseUrl}}/auth/logout", "host": ["{{baseUrl}}"], "path": ["auth", "logout"] }
+          }
+        },
+
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"currentPassword\": \"Admin1234!\",\n  \"newPassword\": \"NewPass5678!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/change-password", "host": ["{{baseUrl}}"], "path": ["auth", "change-password"] }
+          }
+        },
+
+        {
+          "name": "Forgot Password",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@example.com\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/forgot-password", "host": ["{{baseUrl}}"], "path": ["auth", "forgot-password"] },
+            "description": "Token is logged to the API console (Phase 1 — no email service). Copy it from the API terminal and use in Reset Password."
+          }
+        },
+
+        {
+          "name": "Reset Password",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"PASTE_RESET_TOKEN_FROM_API_CONSOLE\",\n  \"newPassword\": \"Admin1234!\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/reset-password", "host": ["{{baseUrl}}"], "path": ["auth", "reset-password"] }
+          }
+        }
+
+      ]
+    },
+
+    {
+      "name": "👤 Employees",
+      "item": [
+
+        {
+          "name": "Get My Profile",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/employees/me", "host": ["{{baseUrl}}"], "path": ["employees", "me"] }
+          }
+        },
+
+        {
+          "name": "Update My Profile",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"timezone\": \"Asia/Kolkata\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/employees/me", "host": ["{{baseUrl}}"], "path": ["employees", "me"] }
+          }
+        },
+
+        {
+          "name": "List Employees (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/employees?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["employees"],
+              "query": [
+                { "key": "page",       "value": "1" },
+                { "key": "limit",      "value": "10" },
+                { "key": "search",     "value": "",  "disabled": true },
+                { "key": "department", "value": "",  "disabled": true },
+                { "key": "isActive",   "value": "1", "disabled": true }
+              ]
+            }
+          }
+        },
+
+        {
+          "name": "Create Employee (Admin)",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "if (pm.response.code === 201) {",
+                "  const id = pm.response.json().data._id;",
+                "  pm.collectionVariables.set('employeeId', id);",
+                "  console.log('✅ employeeId saved:', id);",
+                "}"
+              ],
+              "type": "text/javascript"
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Smith\",\n  \"email\": \"jane.smith@example.com\",\n  \"password\": \"Employee123!\",\n  \"employeeId\": \"EMP-002\",\n  \"department\": \"Engineering\",\n  \"position\": \"Frontend Developer\",\n  \"role\": \"employee\",\n  \"timezone\": \"Asia/Kolkata\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/employees", "host": ["{{baseUrl}}"], "path": ["employees"] }
+          }
+        },
+
+        {
+          "name": "Get Employee by ID (Admin/Manager)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/employees/{{employeeId}}", "host": ["{{baseUrl}}"], "path": ["employees", "{{employeeId}}"] }
+          }
+        },
+
+        {
+          "name": "Update Employee (Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"position\": \"Senior Frontend Developer\",\n  \"department\": \"Product\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/employees/{{employeeId}}", "host": ["{{baseUrl}}"], "path": ["employees", "{{employeeId}}"] }
+          }
+        },
+
+        {
+          "name": "Deactivate Employee (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/employees/{{employeeId}}", "host": ["{{baseUrl}}"], "path": ["employees", "{{employeeId}}"] }
+          }
+        }
+
+      ]
+    },
+
+    {
+      "name": "📋 Attendance",
+      "item": [
+
+        {
+          "name": "Check In",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"method\": \"web\",\n  \"location\": {\n    \"lat\": 23.0225,\n    \"lng\": 72.5714\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/attendance/check-in", "host": ["{{baseUrl}}"], "path": ["attendance", "check-in"] }
+          }
+        },
+
+        {
+          "name": "Check Out",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"method\": \"web\",\n  \"location\": {\n    \"lat\": 23.0225,\n    \"lng\": 72.5714\n  }\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/attendance/check-out", "host": ["{{baseUrl}}"], "path": ["attendance", "check-out"] }
+          }
+        },
+
+        {
+          "name": "Get Today's Record",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/attendance/today", "host": ["{{baseUrl}}"], "path": ["attendance", "today"] }
+          }
+        },
+
+        {
+          "name": "Get My History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/attendance/history?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["attendance", "history"],
+              "query": [
+                { "key": "page",     "value": "1" },
+                { "key": "limit",    "value": "10" },
+                { "key": "dateFrom", "value": "2026-04-01", "disabled": true },
+                { "key": "dateTo",   "value": "2026-04-30", "disabled": true },
+                { "key": "status",   "value": "present",   "disabled": true }
+              ]
+            }
+          }
+        },
+
+        {
+          "name": "Get All Records (Admin/Manager)",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": [
+                "if (pm.response.code === 200) {",
+                "  const records = pm.response.json().data;",
+                "  if (records && records.length > 0) {",
+                "    pm.collectionVariables.set('attendanceId', records[0]._id);",
+                "    console.log('✅ attendanceId saved:', records[0]._id);",
+                "  }",
+                "}"
+              ],
+              "type": "text/javascript"
+            }
+          }],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/attendance?page=1&limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["attendance"],
+              "query": [
+                { "key": "page",       "value": "1" },
+                { "key": "limit",      "value": "10" },
+                { "key": "date",       "value": "2026-04-08", "disabled": true },
+                { "key": "dateFrom",   "value": "2026-04-01", "disabled": true },
+                { "key": "dateTo",     "value": "2026-04-30", "disabled": true },
+                { "key": "department", "value": "Engineering", "disabled": true },
+                { "key": "status",     "value": "present",    "disabled": true },
+                { "key": "employeeId", "value": "",           "disabled": true }
+              ]
+            }
+          }
+        },
+
+        {
+          "name": "Get Attendance Record by ID (Admin/Manager)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/attendance/{{attendanceId}}", "host": ["{{baseUrl}}"], "path": ["attendance", "{{attendanceId}}"] }
+          }
+        },
+
+        {
+          "name": "Get Monthly Summary (Admin/Manager)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/attendance/summary/{{employeeId}}?month=2026-04",
+              "host": ["{{baseUrl}}"],
+              "path": ["attendance", "summary", "{{employeeId}}"],
+              "query": [{ "key": "month", "value": "2026-04" }]
+            }
+          }
+        },
+
+        {
+          "name": "Manual Correction (Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"checkIn\": \"2026-04-08T09:00:00.000Z\",\n  \"checkOut\": \"2026-04-08T18:00:00.000Z\",\n  \"reason\": \"Employee forgot to check in via the portal\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/attendance/{{attendanceId}}", "host": ["{{baseUrl}}"], "path": ["attendance", "{{attendanceId}}"] }
+          }
+        }
+
+      ]
+    },
+
+    {
+      "name": "📊 Reports",
+      "item": [
+
+        {
+          "name": "Monthly Report (Admin/Manager)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reports/monthly?month=2026-04",
+              "host": ["{{baseUrl}}"],
+              "path": ["reports", "monthly"],
+              "query": [
+                { "key": "month",      "value": "2026-04" },
+                { "key": "department", "value": "Engineering", "disabled": true }
+              ]
+            }
+          }
+        },
+
+        {
+          "name": "Department Attendance Rate (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reports/department?month=2026-04",
+              "host": ["{{baseUrl}}"],
+              "path": ["reports", "department"],
+              "query": [{ "key": "month", "value": "2026-04" }]
+            }
+          }
+        },
+
+        {
+          "name": "Export CSV (Admin)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reports/export?month=2026-04",
+              "host": ["{{baseUrl}}"],
+              "path": ["reports", "export"],
+              "query": [
+                { "key": "month",      "value": "2026-04" },
+                { "key": "department", "value": "Engineering", "disabled": true }
+              ]
+            },
+            "description": "Returns a CSV file download. In Postman click **Send and Download** to save the file."
+          }
+        }
+
+      ]
+    }
+
+  ]
+}
