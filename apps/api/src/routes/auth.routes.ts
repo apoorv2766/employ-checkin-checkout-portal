@@ -18,6 +18,7 @@ import {
 
 const router = Router();
 
+<<<<<<< HEAD
 /**
  * @swagger
  * /api/v1/auth/login:
@@ -133,6 +134,17 @@ router.post('/refresh', refreshHandler);
  *             schema:
  *               $ref: '#/components/schemas/ApiError'
  */
+=======
+// POST /api/v1/auth/login
+router.post('/login', validate(loginSchema), loginHandler);
+
+// POST /api/v1/auth/logout  (requires auth — needs to know which session to invalidate)
+router.post('/logout', authenticateJWT, logoutHandler);
+
+// POST /api/v1/auth/refresh  (reads httpOnly cookie — no auth header needed)
+router.post('/refresh', refreshHandler);
+
+>>>>>>> 9c97959f03c8689d19c25bea64a01e0882f31736
 // POST /api/v1/auth/change-password
 router.post(
   '/change-password',
@@ -141,6 +153,7 @@ router.post(
   changePasswordHandler,
 );
 
+<<<<<<< HEAD
 /**
  * @swagger
  * /api/v1/auth/forgot-password:
@@ -190,6 +203,11 @@ router.post('/forgot-password', validate(forgotPasswordSchema), forgotPasswordHa
  *             schema:
  *               $ref: '#/components/schemas/ApiError'
  */
+=======
+// POST /api/v1/auth/forgot-password
+router.post('/forgot-password', validate(forgotPasswordSchema), forgotPasswordHandler);
+
+>>>>>>> 9c97959f03c8689d19c25bea64a01e0882f31736
 // POST /api/v1/auth/reset-password
 router.post('/reset-password', validate(resetPasswordSchema), resetPasswordHandler);
 

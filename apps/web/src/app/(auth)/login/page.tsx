@@ -317,9 +317,9 @@ function LoginForm() {
           {/* Footer */}
           <p className="mt-8 text-center text-xs text-gray-400">
             Need help with policy support?
-            <p className="text-primary-600 hover:text-primary-700 hover:underline inline-block ml-1">
+            <span className="text-primary-600 hover:text-primary-700 hover:underline inline-block ml-1">
               Contact Support!
-            </p>
+            </span>
           </p>
         </div>
       </div>
