@@ -94,17 +94,21 @@ function CheckInCard() {
           onClick={() => { void handleCheckIn(); }}
           disabled={checkIn.isPending || locating}
         >
-          {/* eslint-disable-next-line no-nested-ternary */}
-          {locating ? 'Getting location…' : checkIn.isPending ? 'Checking in…' : '✓ Check In'}
+          <span>
+            {/* eslint-disable-next-line no-nested-ternary */}
+            {locating ? 'Getting location…' : checkIn.isPending ? 'Checking in…' : '✓ Check In'}
+          </span>
         </button>
       )}
       {hasCheckedIn && !hasCheckedOut && (
         <button
-          className="w-full rounded-lg bg-red-500 py-3 text-base font-medium text-white hover:bg-red-600 disabled:opacity-50 transition-colors"
+          className="btn-primary btn-danger w-full py-3 text-base"
           onClick={handleCheckOut}
           disabled={checkOut.isPending}
         >
-          {checkOut.isPending ? 'Checking out…' : '✗ Check Out'}
+          <span>
+            {checkOut.isPending ? 'Checking out…' : '✗ Check Out'}
+          </span>
         </button>
       )}
       {hasCheckedIn && hasCheckedOut && (
