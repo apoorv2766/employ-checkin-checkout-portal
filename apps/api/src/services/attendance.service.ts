@@ -1,4 +1,4 @@
-import { formatInTimeZone } from 'date-fns-tz';
+import { formatInTimeZone, toZonedTime, fromZonedTime } from 'date-fns-tz';
 import { parse, parseISO, differenceInMinutes, differenceInSeconds } from 'date-fns';
 import redis, { checkInKey } from '../lib/redis';
 import { AttendanceRecord, User, AuditLog } from '../models';
@@ -16,15 +16,21 @@ function toLocalDate(utcDate: Date, timezone: string): string {
 /**
  * Parse "HH:MM" time string into a Date on the same calendar day as `referenceDate`
  * in the given timezone, returning a UTC Date.
+ * Uses date-fns-tz v3 API with toZonedTime/fromZonedTime.
  */
 function shiftTimeOnDate(timeStr: string, referenceDate: Date, timezone: string): Date {
-  const localDateStr = formatInTimeZone(referenceDate, timezone, 'yyyy-MM-dd');
-  const localStr = `${localDateStr}T${timeStr}:00`;
-  // date-fns parse in the local timezone context
-  const naive = parse(localStr, "yyyy-MM-dd'T'HH:mm:ss", new Date());
-  // Convert to UTC by re-formatting with timezone awareness
-  const formatted = formatInTimeZone(naive, timezone, "yyyy-MM-dd'T'HH:mm:ssxxx");
-  return parseISO(formatted);
+  // Get the reference date as a zoned time
+  const zonedDate = toZonedTime(referenceDate, timezone);
+  
+  // Extract hours and minutes from the time string
+  const [hours, minutes] = timeStr.split(':').map(Number);
+  
+  // Create a new date with the shift time, keeping the same year/month/day in the target timezone
+  const shiftZoned = new Date(zonedDate);
+  shiftZoned.setHours(hours, minutes, 0, 0);
+  
+  // Convert back to UTC
+  return fromZonedTime(shiftZoned, timezone);
 }
 
 /**
